@@ -23,8 +23,7 @@ We use Spring Boot to build our API backend.
 
 #### MySQL
 We use MySQL as a `relational database model` to store data
-* This is the ***diagram*** of our realmadrid MySQL database:
-![RM-Banner](/assets/mysql.png "realmadrid MySQL diagram")
+* This is the ***diagram*** of our [Insurace Claim MySQL database](https://drawsql.app/teams/minardo/diagrams/insurance-claim "Insurace Claim MySQL diagram")
 
 #### React
 We installed or updated *nodejs* to create our React module for our Front:
@@ -63,6 +62,6 @@ npm install --save moment react-moment
 
 > Complete a full stack Java application.
 
-> Good introduce to [Kanban Board](https://draft.io/jfpa4ryqxn63gg25dh9wds6gvdq6erg4jjr4rbpvyry6 "Kanban")
+> Good introduce to [Trello Board](https://trello.com/b/ExOWpGHq/claim "Trello")
 
 ![RM-Banner](/assets/rm-banner.jpg "Real MAdrid")
