@@ -27,6 +27,8 @@ We use MySQL as a `relational database model` to store data
 
 #### React
 We installed or updated *nodejs* to create our React module for our Front:
+###### create-react-app, npm install bootstrap, npm install --save axios,
+###### npm install --save react-router-dom, npm install react-hook-form
 ```sh
 npm install npm -g 
 cd main directory
