@@ -9,6 +9,7 @@ const Claim = () => {
     const {id} = useParams();
 
     const [users, setUsers] = useState([]);
+    const [types, setTypes] = useState([]);
     const[status, setStatus] = useState(false);
 
     const url = Global.url;
@@ -25,9 +26,15 @@ const Claim = () => {
 
     const onSubmit = (data) => {
         console.log(data);
+  
+    }
 
-        
-        
+    const getTypes = ()=>{
+        axios.get(url + "type")
+        .then(res => {
+            setTypes(res.data);
+        });
+        console.log(types)
     }
 
     const getUsers = ()=>{
@@ -41,7 +48,10 @@ const Claim = () => {
 
     useEffect(() => {
         getUsers();
-    }, [users]);
+
+        getTypes()
+
+    }, []);
 
 
     return (
@@ -72,6 +82,7 @@ const Claim = () => {
                             <option value="1">Accident/Colision</option>
                             <option value="2">Weather/Natural disaster</option>
                             <option value="3">Vandalism</option>
+                            <option value="4">{types[4].type}</option>
                         </select>
                         {errors.type?.type === 'required' && <p>The type of incident must be entered</p>}
                     </div>

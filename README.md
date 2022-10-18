@@ -29,6 +29,7 @@ We use Spring Boot to build our API backend.
 #### MySQL
 We use MySQL as a `relational database model` to store data
 * This is the ***diagram*** of our [Insurace Claim MySQL database](https://drawsql.app/teams/minardo/diagrams/insurance-claim "Insurace Claim MySQL diagram")
+![Database](/assets/database.png "Database")
 
 #### React
 We installed or updated *nodejs* to create our React module for our Front:
