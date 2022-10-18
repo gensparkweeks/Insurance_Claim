@@ -20,4 +20,8 @@ public class UserInfo {
     @OneToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
+
+    @OneToOne
+    @JoinColumn(name="car_id", referencedColumnName = "id")
+    private Car car;
 }

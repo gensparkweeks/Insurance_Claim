@@ -1,5 +1,5 @@
 ![Claim-Banner](/assets/claim.png "Claim")
-## Welcome to the Insurace Claim Module. 
+## Welcome to the Insurance App - Claim Module. 
 ###### Version 1.0
 
 This is a ***Spring-Boot MySql React*** project. With this application we try to manage the claim module of an insurance process in order to provide information to the App. 
@@ -15,7 +15,7 @@ This is a ***Spring-Boot MySql React*** project. With this application we try to
 #### Spring Boot
 We use Spring Boot to build our API backend.
 * The project structure was made using [Spring Initializer](https://start.spring.io/).
-* It contains eigth **entities**:
+* It contains eight **entities**:
     - Car
     - Claim
     - Insurance

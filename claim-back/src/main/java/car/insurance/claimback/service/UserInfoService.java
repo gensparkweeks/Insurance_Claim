@@ -10,4 +10,6 @@ public interface UserInfoService {
     UserInfo update(UserInfo userInfo);
     void delete(int id);
 
+    public Object getInfoForClaim(int id);
+
 }

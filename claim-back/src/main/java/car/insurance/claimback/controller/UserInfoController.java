@@ -12,6 +12,11 @@ public class UserInfoController {
     @Autowired
     public UserInfoService userInfoService;
 
+    @GetMapping("/info/{id}")
+    public Object getUserInfo(@PathVariable int id){
+        return userInfoService.getInfoForClaim(id);
+    }
+
     @GetMapping
     public List<UserInfo> findAll(){
         return userInfoService.findAll();

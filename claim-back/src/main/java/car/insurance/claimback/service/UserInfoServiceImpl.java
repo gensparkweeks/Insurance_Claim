@@ -35,4 +35,9 @@ public class UserInfoServiceImpl implements UserInfoService{
     public void delete(int id) {
         userInfoDao.deleteById(id);
     }
+
+    @Override
+    public Object getInfoForClaim(int id) {
+        return userInfoDao.getInfoForClaim(id);
+    }
 }
