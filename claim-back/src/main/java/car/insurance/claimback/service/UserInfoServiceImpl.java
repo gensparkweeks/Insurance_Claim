@@ -13,6 +13,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     @Override
     public List<UserInfo> findAll() {
+
         return userInfoDao.findAll();
     }
 

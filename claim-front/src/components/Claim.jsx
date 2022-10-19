@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Global from './Global';
 
@@ -13,11 +13,11 @@ const Claim = () => {
     const[status, setStatus] = useState(false);
 
     const url = Global.url;
-    const imgPath = Global.imgPath;
+    const navigate = useNavigate();
 
     const {register, formState:{errors}, handleSubmit} = useForm({
         defaultValues: {
-            type: '', 
+            claimtype: '', 
             description: '',
             created: Date.now(),
             file: []
@@ -25,8 +25,64 @@ const Claim = () => {
     })
 
     const onSubmit = (data) => {
-        console.log(data);
-  
+        var uploaded = null;
+        var validExt = false;
+        
+        if (data.file[0] !== null && data.file[0] !== undefined){         
+
+            const fd = new FormData();
+            fd.append('file0', data.file[0]);
+
+            //Validate file ext
+            const file = data.file[0].name;
+            const index = file.indexOf('.');
+            const ext = file.substr(index + 1);
+
+            if(ext==="pdf" || ext==="docx" || ext==="doc"){
+                validExt = true;
+                uploaded = data.file[0].name;
+
+                //Post
+                axios.post(url+"upload", fd)
+                .then(res =>{
+                    if(res.ok) {
+                        console.log(res.data);
+                    }
+                })
+            }
+            
+        }
+        //load parameter to be save
+        const loadParams = {
+            created: data.created, 
+            description: data.description,
+            upload: uploaded,
+            user:{
+                id:id
+            },
+            type:{
+                id: data.claimtype,
+            },
+            status: {
+                id: 1
+            }
+
+        }
+
+        //Post
+        axios.post(url + "claim", loadParams)
+            .then(res => {
+                if (res.data){ 
+                    console.log(res.data);
+                }
+            });
+
+        if (!validExt){
+            alert("No file was uploaded...)")
+        }
+
+        navigate("/");
+
     }
 
     const getTypes = ()=>{
@@ -34,6 +90,7 @@ const Claim = () => {
         .then(res => {
             setTypes(res.data);
         });
+
         console.log(types)
     }
 
@@ -76,15 +133,14 @@ const Claim = () => {
                         <label className="form-label">What type of claim are you filing?</label>
                         <select className="form-select" 
                                 aria-label="Default select example"
-                                {...register('type', {required:true})}
+                                {...register('claimtype', {required:true})}
                                 >
-                            <option selected>Open this select menu</option>
-                            <option value="1">Accident/Colision</option>
-                            <option value="2">Weather/Natural disaster</option>
-                            <option value="3">Vandalism</option>
-                            <option value="4">{types[4].type}</option>
+                            {types.map(ty =>
+                                <option key={ty.id} value={ty.id}>{ty.type}</option>
+                            )}
+                
                         </select>
-                        {errors.type?.type === 'required' && <p>The type of incident must be entered</p>}
+                        {errors.claimtype?.type === 'required' && <p>The type of incident must be entered</p>}
                     </div>
                     <div className="col-6 mb-3">
                         <label className="form-label">When did the incident happen?</label>
