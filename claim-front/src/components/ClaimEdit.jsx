@@ -4,14 +4,13 @@ import { useParams , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Global from './Global';
 
-const Claim = () => {
+const ClaimEdit = () => {
 
     const {id} = useParams();
 
     const [users, setUsers] = useState([]);
     const [types, setTypes] = useState([]);
     const[status, setStatus] = useState(false);
-    const [claims, setClaims] = useState({})
 
     const url = Global.url;
     const navigate = useNavigate();
@@ -182,4 +181,4 @@ const Claim = () => {
     );
 }
 
-export default Claim;
+export default ClaimEdit;

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-const Bridge = () => {
+const Home = () => {
     return (
         <div className='home'>
             <h1 className='homeh1'>Welcome to the Insurance App</h1>
@@ -9,4 +8,4 @@ const Bridge = () => {
     );
 }
 
-export default Bridge;
+export default Home;

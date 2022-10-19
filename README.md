@@ -54,7 +54,10 @@ We also used `react-hook-form` for manage and validate forms:
 ```sh
 npm install react-hook-form
 ```
-
+We used SweetAlert2 for alerts:
+```sh
+npm install --save sweetalert2
+```
 
 ### What we learned?
 > Related with the back-end:

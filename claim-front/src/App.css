@@ -21,3 +21,55 @@
     padding-top: 250px;
     text-align: center;
 }
+
+.cursor {
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.altura {
+    height: 238px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+
+/* Menu */
+
+#menu {
+    width: 70%;
+    float: right;
+    font-size: 18px;
+    height: 55px;
+}
+
+#menu ul {
+    line-height: 45px;
+    width: 60%;
+    float: right;
+}
+
+#menu ul li {
+    display: inline-block;
+    list-style: none;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+#menu ul li :hover {
+    color: #FFFFFF;
+}
+
+.active {
+    color: #FFFFFF;
+    border-bottom: 2px solid #3cb2d3;
+    text-decoration: none !important;
+}
+
+.inactive {
+    color: #a59f9f;
+    border-bottom: 0px solid white;
+    text-decoration: none !important;
+}
