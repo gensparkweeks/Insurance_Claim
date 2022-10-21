@@ -58,6 +58,10 @@ We used SweetAlert2 for alerts:
 ```sh
 npm install --save sweetalert2
 ```
+We installed `@emailjs/browser` for [sending emails](https://dashboard.emailjs.com/admin/templates "Emailjs"):
+```sh
+npm install @emailjs/browser --save
+```
 
 ### What we learned?
 > Related with the back-end:

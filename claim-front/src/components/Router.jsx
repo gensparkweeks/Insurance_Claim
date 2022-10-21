@@ -6,6 +6,8 @@ import Header from './Header';
 import Home from './Home';
 import Footer from './Footer'
 import ClaimEdit from './ClaimEdit';
+import Test from './Test';
+import ClaimTrack from './ClaimTrack';
 
 const Router = () => {
     return (
@@ -20,8 +22,10 @@ const Router = () => {
                     <Route exact path='/home' element={<Home />} />
                     <Route exact path='/claimlist' element={<ClaimList />} />
                     
-                    <Route exact path='/claimedit/:id' element={<ClaimEdit />} />
+                    <Route exact path='/claimedit/:id/:user' element={<ClaimEdit />} />
+                    <Route exact path='/claimtrack/:id/:user' element={<ClaimTrack />} />
                     
+                    <Route exact path='/test' element={<Test />} />
 
                     <Route exact path='/claim/:id' element={<Claim />} />
 

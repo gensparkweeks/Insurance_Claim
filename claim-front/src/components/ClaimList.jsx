@@ -23,8 +23,8 @@ const ClaimList = () => {
         navigate("/home")
     }
 
-    const onEdit = (id)=>{
-        navigate("/home")
+    const onEdit = (id, user)=>{
+        navigate("/claimedit/"+id+"/"+user)
     }
 
     const onDelete = (id, name)=>{
@@ -48,8 +48,8 @@ const ClaimList = () => {
           });
     }
 
-    const onTrackit = (id)=>{
-        navigate("/home")
+    const onTrackit = (id, user)=>{
+        navigate("/claimtrack/"+id+"/"+user)
     }
 
     const getClaims = ()=> {
@@ -60,7 +60,7 @@ const ClaimList = () => {
             })
     }
 
-    useEffect(getClaims, [claims]);
+    useEffect(getClaims, []);
 
 
     if (claims.length >= 1){
@@ -93,17 +93,26 @@ const ClaimList = () => {
                                 <td>{claim.user.username}</td>
                                 <td>{claim.created.substring(0, 10)}</td>
                                 <td>{claim.description.substring(0, 25)+'...'}</td>
-                                <td>Attached file</td>
+                                
+                                {
+                                claim.upload != null ?
+                                    
+                                    <td>{claim.upload.toLowerCase().substring(0,15)}</td>
+                                :
+                                    <td>No file attached</td>
+                                }
+                                
+                                
                                 <td>{claim.type.type.substring(0, 25)}</td>
                                 <td>{claim.status.status}</td>
                                 <td>
-                                    <img onClick={() => onEdit(claim.user.id)} src={edit} className="img-thumbnail cursor" width={25} alt="Edit" />
+                                    <img onClick={() => onEdit(claim.id, claim.user.id)} src={edit} className="img-thumbnail cursor" width={25} alt="Edit" />
                                 </td>
                                 <td>
                                     <img onClick={() => onDelete(claim.id, claim.user.username)} src={dele} className="img-thumbnail cursor" width={25} alt="Delete" />
                                 </td>
                                 <td>
-                                    <img onClick={() => onTrackit(claim.id)} src={trackit} className="img-thumbnail cursor" width={25} alt="Delete" />
+                                    <img onClick={() => onTrackit(claim.id, claim.user.id)} src={trackit} className="img-thumbnail cursor" width={25} alt="Delete" />
                                 </td>
                             </tr>
                             

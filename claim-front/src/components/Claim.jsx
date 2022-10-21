@@ -11,7 +11,6 @@ const Claim = () => {
     const [users, setUsers] = useState([]);
     const [types, setTypes] = useState([]);
     const[status, setStatus] = useState(false);
-    const [claims, setClaims] = useState({})
 
     const url = Global.url;
     const navigate = useNavigate();

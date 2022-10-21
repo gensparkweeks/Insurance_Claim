@@ -9,7 +9,7 @@ const Header = () => {
                 <a className="navbar-brand" href='http://localhost:3000/home'><h2>INSURANCE - Claims</h2></a>
                 {/* <!-- MENU --> */}
                 <nav id="menu">
-                    <ul class="list-inline">
+                    <ul className="list-inline">
                         <li>
                             <NavLink to="/home" className= {({ isActive }) => (isActive ? 'active' : 'inactive')}>Home</NavLink>
                         </li>
