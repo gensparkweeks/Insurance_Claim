@@ -111,74 +111,78 @@ const Claim = () => {
     }, [id]);
 
 
-    return (
-        <div className='container col-7'>
-            <h1 className='subheader'>Create a Claim for {id} </h1>
-            <div className='row mb-4 mt-3'>
-                <div className='col-4 border-bottom'>
-                    <p>Owner: <strong>{users[0]+ ' '+users[1]}</strong></p>
-                </div>
-                <div className='col-4 border-bottom'>
-                    <p>Policy: <strong>{users[2]}</strong></p>
-                </div>
-                <div className='col-4 border-bottom'>
-                    <p>Car: <strong>{users[3]+' '+users[4]+' '+users[5]}</strong></p>
-                </div>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='g-3'>
-
-                <div className='row'>
-
-                    <div className="col-6 mb-3">
-                        <label className="form-label">What type of claim are you filing?</label>
-                        <select className="form-select" 
-                                aria-label="Default select example"
-                                {...register('claimtype', {required:true})}
-                                >
-                            {types.map(ty =>
-                                <option key={ty.id} value={ty.id}>{ty.type}</option>
-                            )}
-                
-                        </select>
-                        {errors.claimtype?.type === 'required' && <p>The type of incident must be entered</p>}
+    if (status){
+        return (
+            <div className='container col-7'>
+                <h1 className='subheader'>Create a Claim for {id} </h1>
+                <div className='row mb-4 mt-3'>
+                    <div className='col-3 border-bottom'>
+                        <p>Owner: <strong>{users[0]+ ' '+users[1]}</strong></p>
                     </div>
-                    <div className="col-6 mb-3">
-                        <label className="form-label">When did the incident happen?</label>
-                        <input type="date" 
+                    <div className='col-4 border-bottom'>
+                        <p>Policy: <strong>{users[2]}</strong></p>
+                    </div>
+                    <div className='col-5 border-bottom'>
+                        <p>Car: <strong>{users[3]+' '+users[4]+' '+users[5]}</strong></p>
+                    </div>
+                </div>
+                
+                <form onSubmit={handleSubmit(onSubmit)} className='g-3'>
+    
+                    <div className='row'>
+    
+                        <div className="col-6 mb-3">
+                            <label className="form-label">What type of claim are you filing?</label>
+                            <select className="form-select" 
+                                    aria-label="Default select example"
+                                    {...register('claimtype', {required:true})}
+                                    >
+                                {types.map(ty =>
+                                    <option key={ty.id} value={ty.id}>{ty.type}</option>
+                                )}
+                    
+                            </select>
+                            {errors.claimtype?.type === 'required' && <p>The type of incident must be entered</p>}
+                        </div>
+                        <div className="col-6 mb-3">
+                            <label className="form-label">When did the incident happen?</label>
+                            <input type="date" 
+                                    className="form-control" 
+                                    placeholder="Select date..." 
+                                    {...register('created', {required:true})}
+                            />
+                            {errors.created?.type === 'required' && <p>The date must be entered</p>}
+                        </div>  
+                    </div>
+                
+                    <div className="mb-3">
+                        <label className="form-label" >File to upload (<strong>word</strong> / <strong>pdf</strong>)</label>
+                        <input type="file" 
                                 className="form-control" 
-                                placeholder="Select date..." 
-                                {...register('created', {required:true})}
+                                {...register('file')} 
                         />
-                        {errors.created?.type === 'required' && <p>The date must be entered</p>}
-                    </div>  
-                </div>
-            
-                <div className="mb-3">
-                    <label className="form-label" >File to upload (<strong>word</strong> / <strong>pdf</strong>)</label>
-                    <input type="file" 
-                            className="form-control" 
-                            {...register('file')} 
-                    />
-                </div>
-     
-                <div className="mb-3">
-                    <label className="form-label">Description</label>
-                    <textarea className="form-control" 
-                                placeholder='Description here...' 
-                                rows="3"
-                                {...register('description', {required:true})} 
-                                >
-
-                    </textarea>
-                    {errors.description?.type === 'required' && <p>The description must be entered</p>}
-                </div>
-
-                <button type="submit" className="btn btn-primary">Submit</button>
-
-            </form>
-           
-        </div>
-    );
+                    </div>
+         
+                    <div className="mb-3">
+                        <label className="form-label">Description</label>
+                        <textarea className="form-control" 
+                                    placeholder='Description here...' 
+                                    rows="3"
+                                    {...register('description', {required:true})} 
+                                    >
+    
+                        </textarea>
+                        {errors.description?.type === 'required' && <p>The description must be entered</p>}
+                    </div>
+    
+                    <button type="submit" className="btn btn-primary">Submit</button>
+    
+                </form>
+               
+            </div>
+        );
+    }
+    
 }
 
 export default Claim;

@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {useForm} from 'react-hook-form'
-import { useParams } from 'react-router-dom';
 import Global from './Global'
 import Loading from './Loading'
 import emailjs from '@emailjs/browser'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import view from '../statics/images/view.png'
 
 const ClaimTrack = () => {
 
@@ -60,6 +60,10 @@ const ClaimTrack = () => {
         getUserInfo();
         
     }, []);
+
+    const onPdf = (file)=> {
+        navigate('/pdf/'+file)
+    }
 
     const onSubmit = (data) => {
 
@@ -153,20 +157,24 @@ const ClaimTrack = () => {
                     </div>
 
                     <div className='row mb-2' >
-                        <div className='col-7'>
-                            <label className='form-label'><strong>File uploaded</strong></label>
-                            <input type='text' className='form-control'
-                                value={claim.upload != null ? claim.upload.substring(0,30).toLowerCase() : 'No file uploaded'}
-
-                            />
-                        </div>
-
                         <div className='col-5'>
                             <label className='form-label'><strong>Type of incident</strong></label>
                             <input type='text' className='form-control'
                                 value={claim.type ? claim.type.type : 'No type loaded'}
 
                             />
+                        </div>
+                        <div className='col-7'>
+                            <label className='form-label'><strong>File uploaded</strong></label>
+                            <input type='text' className='form-control'
+                                value={claim.upload != null ? claim.upload.substring(0,30).toLowerCase() : 'No file uploaded'}
+
+                            />
+                            {
+                                claim.upload !== null &&
+                                    <img onClick={() => onPdf(claim.upload)} src={view} className="img-thumbnail cursor" width={40} alt="PDF" />
+                            }
+                            
                         </div>
                     </div>
                 </fieldset>
@@ -177,12 +185,14 @@ const ClaimTrack = () => {
                         <label className="form-label"><strong>Modify the status</strong></label>
                         <select className="form-select" 
                                 aria-label="Default select example"
-                                defaultValue={claim.status ? claim.status.id : 0}
                                 {...register('indexstatus', {required:true})}
                                 >
                             {
-                                statusTrack.map(st =>
-                                    <option key={st.id} value={st.id}>{st.status}</option>
+                                statusTrack.map(st =>                                    
+                                    st.id === readTrack ?
+                                        <option key={st.id} value={st.id} selected>{st.status}</option>
+                                    :
+                                        <option key={st.id} value={st.id}>{st.status}</option>            
                                 )
                             }
                 

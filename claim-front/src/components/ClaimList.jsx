@@ -13,10 +13,8 @@ const ClaimList = () => {
 
     const [claims, setClaims] = useState([]);
     const [status, setStatus] = useState(false);
-    
-    const url = Global.url;
-    const uploadPath = Global.uploadPath;
 
+    const url = Global.url;
     const navigate = useNavigate();
 
     const onCreate = ()=>{
@@ -58,6 +56,7 @@ const ClaimList = () => {
                 setStatus(true);
                 setClaims(res.data)
             })
+        
     }
 
     useEffect(getClaims, []);

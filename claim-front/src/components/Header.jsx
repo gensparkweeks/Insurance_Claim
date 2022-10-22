@@ -1,12 +1,27 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink , useNavigate} from 'react-router-dom';
 
 const Header = () => {
+
+    const navigate = useNavigate()
+
+    const onLogout = () => {
+        localStorage.setItem('auth', false)
+        navigate('/home')
+    }
+
+    const onLogin = () => {
+        navigate('/login')
+    }
+
+
+
+
     return (
         
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
             <div className="container-fluid">
-                <a className="navbar-brand" href='http://localhost:3000/home'><h2>INSURANCE - Claims</h2></a>
+                <a className="navbar-brand" href='http://localhost:3000/home'><h3>INSURANCE - Claims</h3></a>
                 {/* <!-- MENU --> */}
                 <nav id="menu">
                     <ul className="list-inline">
@@ -25,12 +40,23 @@ const Header = () => {
                     </ul>
                 </nav>
 
-                <div className="collapse navbar-collapse" id="mynavbar">
-                    <form className="d-flex">
-                        <input className="form-control me-2" type="text" placeholder="Search" />
-                        <button className="btn btn-primary" type="button">Search</button>
-                    </form>
-                </div>
+                {/* <div className="collapse navbar-collapse" id="mynavbar"> */}
+                <nav id="menu">
+                    <ul className="list-inline">
+                        <li>
+                            {/* {
+                                !localStorage.getItem('auth')  ? */}
+                                    <button onClick={onLogout} className="btn btn-primary">Logout</button>   
+                                {/* : */}
+                                    <button onClick={onLogin} className="btn btn-primary">Login</button>
+                            {/* } */}
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                   
+                {/* </div> */}
             </div>
            
         </nav> 

@@ -62,6 +62,10 @@ We installed `@emailjs/browser` for [sending emails](https://dashboard.emailjs.c
 ```sh
 npm install @emailjs/browser --save
 ```
+We used ` react-doc-viewer` for viewing documents:
+```sh
+npm install react-doc-viewer --save
+```
 
 ### What we learned?
 > Related with the back-end:

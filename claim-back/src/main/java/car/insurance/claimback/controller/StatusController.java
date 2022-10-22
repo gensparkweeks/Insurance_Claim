@@ -20,6 +20,7 @@ public class StatusController {
 
     @GetMapping("/{id}")
     public Status findById(@PathVariable int id){
+
         return statusService.findById(id);
     }
 

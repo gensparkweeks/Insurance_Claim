@@ -19,6 +19,7 @@ public class StatusServiceImpl implements StatusService{
 
     @Override
     public Status findById(int id) {
+
         return statusDao.findById(id).orElseThrow();
     }
 
