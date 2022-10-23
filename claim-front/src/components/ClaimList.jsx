@@ -8,17 +8,24 @@ import create from '../statics/images/create.png';
 import { useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 import Swal from 'sweetalert2'
+import login from '../statics/images/login.png'
+import logout from '../statics/images/logout.png'
 
 const ClaimList = () => {
 
     const [claims, setClaims] = useState([]);
     const [status, setStatus] = useState(false);
 
+    const auth = localStorage.getItem('auth')
+    const userid = localStorage.getItem('userid')
+    const name = localStorage.getItem('name')
+
     const url = Global.url;
     const navigate = useNavigate();
+    const urlFull =  name === 'admin' ? url + 'claim' : url + 'claim/name/' + name;
 
     const onCreate = ()=>{
-        navigate("/home")
+        navigate("/claim/"+ userid)
     }
 
     const onEdit = (id, user)=>{
@@ -51,20 +58,59 @@ const ClaimList = () => {
     }
 
     const getClaims = ()=> {
-        axios.get(url + "claim")
-            .then(res => {
-                setStatus(true);
-                setClaims(res.data)
-            })
+        console.log('urlFull', urlFull)
+        axios.get(urlFull)
+        .then(res => {
+            setStatus(true);
+            setClaims(res.data)
+        })
         
     }
 
-    useEffect(getClaims, []);
+    useEffect(getClaims, [claims]);
 
+    const onLogout = () => {
+        localStorage.setItem('auth', false)
+        navigate('/home')
+    }
+
+    const onLogin = () => {
+        navigate('/login')
+    }
+
+    if (auth === 'false'){
+        navigate('/login')
+    }
 
     if (claims.length >= 1){
-
+        
         return (
+            <>
+            <div className='row mt-1'>
+                <div className='col-10'></div>
+                <div className='col-1'>
+                {
+                     auth === 'true' &&  <span>{name}</span>
+                }
+                </div>
+                <div className='col-1'>
+                    {/* {
+                        auth === 'true' ?
+                            
+                            <button onClick={onLogout} className="btn btn-secondary">Logout</button>
+                        : 
+                            <button onClick={onLogin} className="btn btn-secondary">Login</button>
+                    } */}
+
+                    {
+                        auth === 'true' ?
+                            <img onClick={() => onLogout()} src={logout} className="img-thumbnail cursor" width={35} alt="Create" />
+                        : 
+                        <   img onClick={() => onLogin()} src={login} className="img-thumbnail cursor" width={35} alt="Create" />
+                    }
+                </div>
+            </div>
+            
             <div className="container mt-3">
                 <h2>List of Claims</h2>
                 <p>
@@ -82,7 +128,10 @@ const ClaimList = () => {
                             <th>Status</th>
                             <th>Edit</th>
                             <th>Delete</th>
-                            <th>TrackIt</th>
+                            {
+                                name === 'admin' && <th>TrackIt</th>
+                            }
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -110,9 +159,13 @@ const ClaimList = () => {
                                 <td>
                                     <img onClick={() => onDelete(claim.id, claim.user.username)} src={dele} className="img-thumbnail cursor" width={25} alt="Delete" />
                                 </td>
-                                <td>
-                                    <img onClick={() => onTrackit(claim.id, claim.user.id)} src={trackit} className="img-thumbnail cursor" width={25} alt="Delete" />
-                                </td>
+
+                                { name === 'admin' &&
+                                    <td>
+                                        <img onClick={() => onTrackit(claim.id, claim.user.id)} src={trackit} className="img-thumbnail cursor" width={25} alt="Delete" />
+                                    </td>
+                                }
+                                
                             </tr>
                             
                             )
@@ -122,7 +175,7 @@ const ClaimList = () => {
                     </tbody>
                 </table>    
             </div>
-    
+            </>
         );
 
     }else if(!status){

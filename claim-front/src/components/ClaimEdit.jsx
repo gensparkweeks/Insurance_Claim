@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams , useNavigate} from 'react-router-dom';
+import { useParams , useNavigate, NavLink} from 'react-router-dom';
 import axios from 'axios';
 import Global from './Global';
 import Loading from './Loading';
+import login from '../statics/images/login.png'
+import logout from '../statics/images/logout.png'
 
 const ClaimEdit = () => {
 
@@ -13,6 +15,10 @@ const ClaimEdit = () => {
     const [types, setTypes] = useState([]);
     const[status, setStatus] = useState(false);
     const [claim, setClaim] = useState({});
+
+    const auth = localStorage.getItem('auth')
+    const userid = localStorage.getItem('userid')
+    const name = localStorage.getItem('name')
 
     const [typeid, setTypeid] = useState(0)
     const [created, setCreated] = useState('2022-10-10')
@@ -129,21 +135,62 @@ const ClaimEdit = () => {
         
     }, []);
 
+    const onLogout = () => {
+        localStorage.setItem('auth', false)
+        navigate('/home')
+    }
+
+    const onLogin = () => {
+        navigate('/login')
+    }
+
+    const onCancel = () => {
+        navigate('/claimlist')
+    }
+
     if (claim != null ){
         console.log(claim)
         console.log("States: ", typeid, created, file, des)
 
         return (
+
+            <>
+             <div className='row mt-1'>
+                <div className='col-10'></div>
+                <div className='col-1'>
+                {
+                     auth === 'true' &&  <span>{name}</span>
+                }
+                </div>
+                <div className='col-1'>
+                    {/* {
+                        auth === 'true' ?
+                            
+                            <button onClick={onLogout} className="btn btn-secondary">Logout</button>
+                        : 
+                            <button onClick={onLogin} className="btn btn-secondary">Login</button>
+                    } */}
+                    
+                    {
+                        auth === 'true' ?
+                            <img onClick={() => onLogout()} src={logout} className="img-thumbnail cursor" width={35} alt="Create" />
+                        : 
+                        <   img onClick={() => onLogin()} src={login} className="img-thumbnail cursor" width={35} alt="Create" />
+                    }
+
+                </div>
+            </div>
+            
             <div className='container col-7'>
-                <h1 className='subheader'>Editing a Claim for {user} </h1>
+                <h1 className='subheader'>Editing a Claim</h1>
                 <div className='row mb-4 mt-3'>
-                    <div className='col-4 border-bottom'>
+                    <div className='col-3 border-bottom'>
                         <p>Owner: <strong>{users[0]+ ' '+users[1]}</strong></p>
                     </div>
                     <div className='col-4 border-bottom'>
                         <p>Policy: <strong>{users[2]}</strong></p>
                     </div>
-                    <div className='col-4 border-bottom'>
+                    <div className='col-5 border-bottom'>
                         <p>Car: <strong>{users[3]+' '+users[4]+' '+users[5]}</strong></p>
                     </div>
                 </div>
@@ -151,7 +198,7 @@ const ClaimEdit = () => {
     
                     <div className='row'>
     
-                        <div className="col-6 mb-3">
+                        <div className="col-6">
                             <label className="form-label">What type of claim are you filing?</label>
                             <select className="form-select" 
                                     aria-label="Default select example"
@@ -166,7 +213,7 @@ const ClaimEdit = () => {
                             </select>
                             {errors.claimtype?.type === 'required' && <p>The type of incident must be entered</p>}
                         </div>
-                        <div className="col-6 mb-3">
+                        <div className="col-6">
                             <label className="form-label">When did the incident happen?</label>
                             <input type="date" 
                                     className="form-control" 
@@ -179,7 +226,7 @@ const ClaimEdit = () => {
                         </div>  
                     </div>
                 
-                    <div className="mb-3">                        
+                    <div className="mb-1">                        
                         <label className="form-label" >File to upload (<strong>word</strong> / <strong>pdf</strong>)</label>
                         <input type="file" 
                             className="form-control" 
@@ -203,11 +250,17 @@ const ClaimEdit = () => {
                         {errors.description?.type === 'required' && <p>The description must be entered</p>}
                     </div>
     
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <div className="col-11 d-flex justify-content-center">
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <div className='col-1 mb-1'></div>
+                        <button onClick={()=>{onCancel()}} className="btn btn-secondary">Cancel</button>   
+                    </div>
     
                 </form>
                
             </div>
+            </>
+    
         );
 
     }else if(!status){

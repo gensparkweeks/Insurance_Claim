@@ -7,6 +7,8 @@ import emailjs from '@emailjs/browser'
 import Swal from 'sweetalert2'
 import { useNavigate, useParams } from 'react-router-dom';
 import view from '../statics/images/view.png'
+import login from '../statics/images/login.png'
+import logout from '../statics/images/logout.png'
 
 const ClaimTrack = () => {
 
@@ -25,8 +27,22 @@ const ClaimTrack = () => {
     const [statusName, setStatusName] = useState('')
     const [readTrack, setReadTrack] = useState(0)
 
-    const {url, uploadPath} = Global;
+    const {url} = Global;
     const navigate = useNavigate();
+
+    const auth = localStorage.getItem('auth')
+    const name = localStorage.getItem('name')
+
+    if (name !== 'admin'){
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'Ony administrator has access...',
+            showConfirmButton: false,
+            timer: 2000
+          })
+        navigate('/claimlist')
+    }
     
     const getUserInfo = () => {
         console.log(url + "userinfo/info/" + user)
@@ -112,20 +128,59 @@ const ClaimTrack = () => {
             message: msg
         }, '40J0Q1y60dITDUwU_');
         
-        Swal.fire("Good job!", "Your email was sent!", "success");
+        Swal.fire("Good job!", "An email was sent!", "success");
         navigate("/claimlist");   
 
     }
 
-    if (claim != null){
+    const onLogout = () => {
+        localStorage.setItem('auth', false)
+        navigate('/home')
+    }
+
+    const onLogin = () => {
+        navigate('/login')
+    }
+
+    const onCancel = ()=>{
+        navigate("/claimlist");
+    }
+
+    if (claim != null ){
 
         return (
+            <>
+            <div className='row mt-1'>
+                <div className='col-10'></div>
+                <div className='col-1'>
+                {
+                     auth === 'true' &&  <span>{name}</span>
+                }
+                </div>
+                <div className='col-1'>
+                    {/* {
+                        auth === 'true' ?
+                            
+                            <button onClick={onLogout} className="btn btn-secondary">Logout</button>
+                        : 
+                            <button onClick={onLogin} className="btn btn-secondary">Login</button>
+                    } */}
+                    
+                    {
+                        auth === 'true' ?
+                            <img onClick={() => onLogout()} src={logout} className="img-thumbnail cursor" width={35} alt="Create" />
+                        : 
+                        <   img onClick={() => onLogin()} src={login} className="img-thumbnail cursor" width={35} alt="Create" />
+                    }
+                </div>
+            </div>
+
             <div className='container col-7'>
                 <h1 className='subheader'>Tracking a Claim</h1>
 
                 <fieldset disabled>
 
-                    <div className='row mb-4 mt-3'>
+                    <div className='row'>
                         <div className='col-4 border-bottom'>
                             <p>Owner: <strong>{userInfo[0]+ ' '+userInfo[1]}</strong></p>
                         </div>
@@ -156,7 +211,7 @@ const ClaimTrack = () => {
                         </div >
                     </div>
 
-                    <div className='row mb-2' >
+                    <div className='row' >
                         <div className='col-5'>
                             <label className='form-label'><strong>Type of incident</strong></label>
                             <input type='text' className='form-control'
@@ -181,7 +236,7 @@ const ClaimTrack = () => {
 
                 <form onSubmit={handleSubmit(onSubmit)} className='g-3'>
     
-                    <div className="col-4 mb-3">
+                    <div className="col-4 mb-1">
                         <label className="form-label"><strong>Modify the status</strong></label>
                         <select className="form-select" 
                                 aria-label="Default select example"
@@ -199,11 +254,17 @@ const ClaimTrack = () => {
                         </select>
                     </div>                
     
-                    <button type="submit" className="btn btn-primary">Submit</button>
-    
+                    <div className="col-11 d-flex justify-content-center">
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <div className='col-1 mb-1'></div>
+                        <button onClick={()=>{onCancel()}} className="btn btn-secondary">Cancel</button>   
+                    </div>
+                       
                 </form>
                
             </div>
+            </>
+            
         );
 
     }else if(!status){

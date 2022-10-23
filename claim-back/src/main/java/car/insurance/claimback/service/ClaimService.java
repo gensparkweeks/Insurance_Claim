@@ -9,4 +9,5 @@ public interface ClaimService {
     Claim create(Claim claim);
     Claim update(Claim claim);
     void delete(int id);
+    List<Claim> findByName(String name);
 }

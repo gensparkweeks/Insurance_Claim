@@ -1,22 +1,58 @@
 import React from 'react';
-import { useParams} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import login from '../statics/images/login.png'
+import logout from '../statics/images/logout.png'
+import home from '../statics/images/homep1.png'
+import homeleft from '../statics/images/homeleft.png'
 
 const Home = () => {
 
-    const {auth} = useParams()
+    const auth = localStorage.getItem('auth')
+    const name = localStorage.getItem('name')
 
-    console.log(auth)
-
-    if (auth === 0){
-        localStorage.setItem('auth', false); 
-        console.log('paso auth')
+    const navigate = useNavigate();
+        
+    const onLogout = () => {
+        localStorage.setItem('auth', false)
+        navigate('/home')
     }
-    
+
+    const onLogin = () => {
+        navigate('/login')
+    }
 
     return (
-        <div className='home'>
-            <h1 className='homeh1'>Welcome to the Insurance App</h1>
-        </div>
+        <>
+           <div className='row mt-1'>
+                <div className='col-10'></div>
+                <div className='col-1'>
+                {
+                     auth === 'true' &&  <span>{name}</span>
+                }
+                </div>
+                <div className='col-1'>
+                    {/* {
+                        auth === 'true' ?
+                            
+                            <button onClick={onLogout} className="btn btn-secondary">Logout</button>
+                        : 
+                            <button onClick={onLogin} className="btn btn-secondary">Login</button>
+                    } */}
+
+                    {
+                        auth === 'true' ?
+                            <img onClick={() => onLogout()} src={logout} className="img-thumbnail cursor" width={35} alt="Create" />
+                        : 
+                        <   img onClick={() => onLogin()} src={login} className="img-thumbnail cursor" width={35} alt="Create" />
+                    }
+                </div>
+            </div>
+
+            <div className='home'>  
+                <img src={home} className="img-thumbnail mw-100 h-100 img-home" alt="Home" />  
+                <div className='col-2'>.</div>           
+            </div>
+        </>
     );
 }
 

@@ -3,6 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useParams , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Global from './Global';
+import login from '../statics/images/login.png'
+import logout from '../statics/images/logout.png'
+import emailjs from '@emailjs/browser'
+import Swal from 'sweetalert2'
 
 const Claim = () => {
 
@@ -11,6 +15,11 @@ const Claim = () => {
     const [users, setUsers] = useState([]);
     const [types, setTypes] = useState([]);
     const[status, setStatus] = useState(false);
+
+    const auth = localStorage.getItem('auth')
+    const userid = localStorage.getItem('userid')
+    const name = localStorage.getItem('name')
+    
 
     const url = Global.url;
     const navigate = useNavigate();
@@ -77,11 +86,30 @@ const Claim = () => {
                 }
             });
 
-        if (!validExt){
-            alert("No file was uploaded...)")
-        }
 
-        navigate("/");
+        //Sending the email
+        
+        const msg = `
+            You have created a new claim. 
+            Please, contact us.
+            ${loadParams.description} 
+        `;
+
+        emailjs.send('service_wiylkri', 'template_i367izz', {
+            fullname: users[0]+ ' '+users[1], 
+            email: users[6], 
+            message: msg
+        }, '40J0Q1y60dITDUwU_');
+
+        Swal.fire({
+            position: 'center',
+            icon: 'info',
+            title: 'A new claim was created..',
+            showConfirmButton: false,
+            timer: 2000
+          })
+
+        navigate("/claimlist");
 
     }
 
@@ -108,13 +136,52 @@ const Claim = () => {
 
         getTypes()
 
-    }, [id]);
+    }, [users]);
 
+    const onLogout = () => {
+        localStorage.setItem('auth', false)
+        navigate('/home')
+    }
+
+    const onLogin = () => {
+        navigate('/login')
+    }
+
+    const onCancel = () => {
+        navigate('/claimlist')
+    }
 
     if (status){
         return (
+            <>
+
+            <div className='row mt-1'>
+            <div className='col-10'></div>
+                <div className='col-1'>
+                {
+                     auth === 'true' &&  <span>{name}</span>
+                }
+                </div>
+                <div className='col-1'>
+                    {/* {
+                        auth === 'true' ?
+                            <button onClick={onLogout} className="btn btn-secondary">Logout</button>
+                        : 
+                            <button onClick={onLogin} className="btn btn-secondary">Login</button>
+                    } */}
+
+{
+                        auth === 'true' ?
+                            <img onClick={() => onLogout()} src={logout} className="img-thumbnail cursor" width={35} alt="Create" />
+                        : 
+                        <   img onClick={() => onLogin()} src={login} className="img-thumbnail cursor" width={35} alt="Create" />
+                    }
+                    
+                </div>
+            </div>
+
             <div className='container col-7'>
-                <h1 className='subheader'>Create a Claim for {id} </h1>
+                <h1 className='subheader'>Adding a Claim</h1>
                 <div className='row mb-4 mt-3'>
                     <div className='col-3 border-bottom'>
                         <p>Owner: <strong>{users[0]+ ' '+users[1]}</strong></p>
@@ -175,11 +242,19 @@ const Claim = () => {
                         {errors.description?.type === 'required' && <p>The description must be entered</p>}
                     </div>
     
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <div className="col-11 d-flex justify-content-center">
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <div className='col-1 mb-1'></div>
+                        <button onClick={()=>{onCancel()}} className="btn btn-secondary">Cancel</button>   
+                    </div>
     
                 </form>
                
             </div>
+
+            </>
+
+            
         );
     }
     

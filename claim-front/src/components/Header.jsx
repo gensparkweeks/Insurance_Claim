@@ -1,21 +1,7 @@
 import React from 'react';
-import { NavLink , useNavigate} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Header = () => {
-
-    const navigate = useNavigate()
-
-    const onLogout = () => {
-        localStorage.setItem('auth', false)
-        navigate('/home')
-    }
-
-    const onLogin = () => {
-        navigate('/login')
-    }
-
-
-
 
     return (
         
@@ -32,31 +18,20 @@ const Header = () => {
                             <NavLink to="/claimlist" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>Claims</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/claim/1" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>Claim1</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/claimedit/1" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>ClaimEdit</NavLink>
+                            {/* <NavLink to="" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>About</NavLink> */}
+                            
                         </li>
                     </ul>
                 </nav>
 
-                {/* <div className="collapse navbar-collapse" id="mynavbar"> */}
-                <nav id="menu">
-                    <ul className="list-inline">
-                        <li>
-                            {/* {
-                                !localStorage.getItem('auth')  ? */}
-                                    <button onClick={onLogout} className="btn btn-primary">Logout</button>   
-                                {/* : */}
-                                    <button onClick={onLogin} className="btn btn-primary">Login</button>
-                            {/* } */}
+                {/* <div className="collapse navbar-collapse" id="mynavbar">
+                    
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                    </form>
                             
-                        </li>
-                        
-                    </ul>
-                </nav>
-                   
-                {/* </div> */}
+                </div> */}
             </div>
            
         </nav> 

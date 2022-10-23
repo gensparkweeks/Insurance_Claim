@@ -38,4 +38,9 @@ public class ClaimController {
         claimService.delete(id);
     }
 
+    @GetMapping("name/{name}")
+    public List<Claim> findByName(@PathVariable String name){
+        return claimService.findByName(name);
+    }
+
 }

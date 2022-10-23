@@ -14,12 +14,17 @@
 }
 
 .home {
-    height: 500px;
+    height: 430px;
+    margin: 0 auto;
 }
 
 .homeh1 {
-    padding-top: 250px;
+    padding-top: 200px;
     text-align: center;
+}
+
+.img-home {
+    margin-left: 22%;
 }
 
 .cursor {

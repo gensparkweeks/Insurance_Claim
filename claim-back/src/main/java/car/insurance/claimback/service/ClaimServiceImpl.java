@@ -36,4 +36,11 @@ public class ClaimServiceImpl implements ClaimService{
     public void delete(int id) {
         claimDao.deleteById(id);
     }
+
+    @Override
+    public List<Claim> findByName(String name) {
+        return claimDao.findByName(name);
+    }
+
+
 }

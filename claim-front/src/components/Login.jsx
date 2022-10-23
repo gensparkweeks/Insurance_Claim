@@ -13,27 +13,27 @@ const Login = () => {
     const [users, setUsers] = useState({})
     const {register, formState:{errors}, handleSubmit} = useForm({
         defaultValues: {
-            user:'',
-            pass:''
+            username:'',
+            password:''
         }
     })
 
     const onSubmit = (data) => {
-
-        axios.get(url + 'user/user/' + data.user)
+        console.log(url + 'user/user/' + data.username)
+        axios.get(url + 'user/user/' + data.username)
             .then(res => {
                 setUsers(res.data) 
             })
         
         console.log(users)
-        console.log(users.username === data.user)
+        console.log(users.username === data.username)
         
-        if (users.username === data.user){
-            localStorage.setItem('user', 1)
+        if (users.username === data.username){
+            localStorage.setItem('userid', users.id)
             localStorage.setItem('auth', true)
-            localStorage.setItem('name', data.user)
+            localStorage.setItem('name', data.username)
 
-            navigate('/home')
+            navigate(-1)
         }else{
             Swal.fire({
                 position: 'center',
@@ -57,7 +57,7 @@ const Login = () => {
                     <label className="form-label">User name</label>
                     <input type="input" 
                             className="form-control" 
-                            {...register('user', {required:true})}
+                            {...register('username', {required:true})}
                     />  
                     {errors.user?.type === 'required' && <p>The user must be entered</p>} 
                 </div>
@@ -67,7 +67,7 @@ const Login = () => {
                     <label className="form-label" >Password</label>
                     <input type="password" 
                             className="form-control" 
-                            {...register('pass', {required:true})}
+                            {...register('password', {required:true})}
                     />  
                     {errors.pass?.type === 'required' && <p>The password must be entered</p>} 
                 </div>
