@@ -1,41 +1,44 @@
 import React, {useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams , useNavigate, NavLink} from 'react-router-dom';
+import { useParams , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Global from './Global';
-import Loading from './Loading';
 import login from '../statics/images/login.png'
 import logout from '../statics/images/logout.png'
+import emailjs from '@emailjs/browser'
+import Swal from 'sweetalert2'
+import view from '../statics/images/view.png'
 
-const ClaimEdit = () => {
+const Claim = () => {
 
-    const {id, user} = useParams();
+    const {id} = useParams();
 
+    const [claim, setClaim] = useState({});
+    const [typeId, setTypeId] = useState(0);
     const [users, setUsers] = useState([]);
     const [types, setTypes] = useState([]);
     const[status, setStatus] = useState(false);
-    const [claim, setClaim] = useState({});
 
     const auth = localStorage.getItem('auth')
     const userid = localStorage.getItem('userid')
     const name = localStorage.getItem('name')
-
-    const [typeid, setTypeid] = useState(0)
-    const [created, setCreated] = useState('2022-10-10')
-    const [file, setFile] = useState(null)
-    const [des, setDes] = useState('')
+    
 
     const url = Global.url;
-    const uploadPath = Global.uploadPath;
-
     const navigate = useNavigate();
 
-    const {register, setValue, formState:{errors}, handleSubmit} = useForm()
+    const {register, formState:{errors}, handleSubmit} = useForm({
+        // defaultValues: {
+        //     claimtype: '', 
+        //     description: '',
+        //     created: '',
+        //     file: []
+        // }
+    })
 
     const onSubmit = (data) => {
-        var uploaded = claim.upload;
+        var uploaded = null;
         var validExt = false;
-        
         if (data.file[0] !== null && data.file[0] !== undefined){         
 
             const fd = new FormData();
@@ -44,7 +47,7 @@ const ClaimEdit = () => {
             //Validate file ext
             const file = data.file[0].name;
             const index = file.indexOf('.');
-            const ext = file.substr(index + 1);
+            const ext = file.substring(index + 1);
 
             if(ext==="pdf" || ext==="docx" || ext==="doc"){
                 validExt = true;
@@ -85,30 +88,47 @@ const ClaimEdit = () => {
                 }
             });
 
-        if (!validExt){
-            alert("No file was uploaded...)")
-        }
 
-        navigate("/");
+        //Sending the email
+        
+        const msg = `
+            You have created a new claim. 
+            Please, contact us.
+            ${loadParams.description} 
+        `;
+
+        emailjs.send('service_wiylkri', 'template_i367izz', {
+            fullname: users[0]+ ' '+users[1], 
+            email: users[6], 
+            message: msg
+        }, '40J0Q1y60dITDUwU_');
+
+        Swal.fire({
+            position: 'center',
+            icon: 'info',
+            title: 'A new claim was created..',
+            showConfirmButton: false,
+            timer: 2000
+          })
+
+        navigate("/claimlist");
 
     }
 
     const getTypes = ()=>{
-        console.log(url + "type")
         axios.get(url + "type")
         .then(res => {
             setTypes(res.data);
         });
 
-        console.log("Types: " + types)
+        console.log(types)
     }
 
     const getUsers = ()=>{
-        axios.get(url + "userinfo/info/" + user)
+        axios.get(url + "userinfo/info/" + userid)
         .then(res => {
             setUsers(res.data);
             setStatus(true) 
-            console.log("UserInfo: " + users)
         });
 
     }
@@ -119,20 +139,15 @@ const ClaimEdit = () => {
             .then(res => {
                 setStatus(true);
                 setClaim(res.data)
-
-                setTypeid(res.data.type.id);
-                setCreated(res.data.created.substring(0,10).toString());
-                setFile(res.data.upload.toLowerCase());
-                setDes(res.data.description);
-                
+                setTypeId(res.data.type.id)
             })
     }
 
     useEffect(() => {
         getClaim();
-        getTypes();
         getUsers();
-        
+        getTypes();
+
     }, []);
 
     const onLogout = () => {
@@ -148,42 +163,38 @@ const ClaimEdit = () => {
         navigate('/claimlist')
     }
 
-    if (claim != null ){
-        console.log(claim)
-        console.log("States: ", typeid, created, file, des)
+    const onPdf = (file)=> {
+        navigate('/pdf/'+file)
+    }
 
+    if (status){
+        console.log(typeId)
+    
         return (
-
             <>
-             <div className='row mt-1'>
+            <div className='row'>
+
                 <div className='col-10'></div>
+                    <div className='col-1'>
+                    {
+                        auth === 'true' &&  <span>{name}</span>
+                    }
+                    </div>
                 <div className='col-1'>
-                {
-                     auth === 'true' &&  <span>{name}</span>
-                }
-                </div>
-                <div className='col-1'>
-                    {/* {
-                        auth === 'true' ?
-                            
-                            <button onClick={onLogout} className="btn btn-secondary">Logout</button>
-                        : 
-                            <button onClick={onLogin} className="btn btn-secondary">Login</button>
-                    } */}
-                    
+                   
                     {
                         auth === 'true' ?
                             <img onClick={() => onLogout()} src={logout} className="img-thumbnail cursor" width={35} alt="Create" />
                         : 
                         <   img onClick={() => onLogin()} src={login} className="img-thumbnail cursor" width={35} alt="Create" />
                     }
-
+                    
                 </div>
             </div>
-            
+
             <div className='container col-7'>
                 <h1 className='subheader'>Editing a Claim</h1>
-                <div className='row mb-4 mt-3'>
+                <div className='row mb-4 mt-1'>
                     <div className='col-3 border-bottom'>
                         <p>Owner: <strong>{users[0]+ ' '+users[1]}</strong></p>
                     </div>
@@ -194,55 +205,67 @@ const ClaimEdit = () => {
                         <p>Car: <strong>{users[3]+' '+users[4]+' '+users[5]}</strong></p>
                     </div>
                 </div>
+                
                 <form onSubmit={handleSubmit(onSubmit)} className='g-3'>
     
                     <div className='row'>
     
-                        <div className="col-6">
+                        <div className="col-6 mb-1">
                             <label className="form-label">What type of claim are you filing?</label>
                             <select className="form-select" 
                                     aria-label="Default select example"
-                                    defaultValue={typeid}
-                                    onChange={(e)=>setTypeid(e.target.value)}
                                     {...register('claimtype', {required:true})}
                                     >
                                 {types.map(ty =>
-                                    <option key={ty.id} value={ty.id}>{ty.type}</option>
-                                )}
+                                    typeId === ty.id ?
+                                        <option key={ty.id} value={ty.id} selected>{ty.type}</option>
+                                    :
+                                        <option key={ty.id} value={ty.id}>{ty.type}</option>
+                                )
+                                }
                     
                             </select>
                             {errors.claimtype?.type === 'required' && <p>The type of incident must be entered</p>}
                         </div>
-                        <div className="col-6">
+                        <div className="col-6 mb-1">
                             <label className="form-label">When did the incident happen?</label>
                             <input type="date" 
                                     className="form-control" 
                                     placeholder="Select date..." 
-                                    defaultValue={claim.created}
-                                    onChange={(e)=>setCreated(e.target.value)}
+                                    defaultValue={claim.created.substring(0, 10)}
                                     {...register('created', {required:true})}
                             />
                             {errors.created?.type === 'required' && <p>The date must be entered</p>}
                         </div>  
                     </div>
-                
-                    <div className="mb-1">                        
-                        <label className="form-label" >File to upload (<strong>word</strong> / <strong>pdf</strong>)</label>
-                        <input type="file" 
-                            className="form-control" 
-                            defaultValue={file}
-                            onChange={(e)=>setFile(e.target.value)}
-                            {...register('file')} 
-                        />
+
+                    <div className='row mt-1'>
+                    <label className="form-label" >File to upload (<strong>word</strong> / <strong>pdf</strong>)</label>
+                    </div>
+
+                    <div className='row'>
+
+                        <div className="mb-1 col-8">
+                            
+                            <input type="file" 
+                                    className="form-control" 
+                                    {...register('file')} 
+                            />
+                        </div>
+                        <div className="mb-1 col-2">
+                            {
+                                claim.upload !== null &&
+                                    <img onClick={() => onPdf(claim.upload)} src={view} className="img-thumbnail cursor" width={40} alt="PDF" />
+                            }
+                        </div>
                     </div>
          
-                    <div className="mb-3">
+                    <div className="mb-2">
                         <label className="form-label">Description</label>
                         <textarea className="form-control" 
                                     placeholder='Description here...' 
                                     rows="3"
-                                    defaultValue={des}
-                                    onChange={(e)=>setDes(e.target.value)}
+                                    defaultValue={claim.description} 
                                     {...register('description', {required:true})} 
                                     >
     
@@ -259,27 +282,13 @@ const ClaimEdit = () => {
                 </form>
                
             </div>
-            </>
-    
-        );
 
-    }else if(!status){
-        return(
-            <div>
-                <Loading />
-            </div>
-        )
-    }else{
-        return(
-            <>
-                <div className='altura'></div>
-                    <h3 className='text-center'>There is no Claim to show...</h3>
-                <div className='altura'></div>
             </>
+
             
-        )
+        );
     }
     
 }
 
-export default ClaimEdit;
+export default Claim;

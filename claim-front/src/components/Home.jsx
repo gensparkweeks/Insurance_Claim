@@ -2,8 +2,7 @@ import React from 'react';
 import { useNavigate} from 'react-router-dom';
 import login from '../statics/images/login.png'
 import logout from '../statics/images/logout.png'
-import home from '../statics/images/homep1.png'
-import homeleft from '../statics/images/homeleft.png'
+import home from '../statics/images/home.png'
 
 const Home = () => {
 

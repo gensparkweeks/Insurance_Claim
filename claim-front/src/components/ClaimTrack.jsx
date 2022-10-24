@@ -192,7 +192,7 @@ const ClaimTrack = () => {
                         </div>
                     </div>
 
-                    <div className='row mb-2' >
+                    <div className='row mb-1' >
                         <div className='col-5'>
                             <label className='form-label'><strong>Date of the incident</strong></label>
                             <input type='text' id="disabledTextInput" className='form-control'
@@ -236,7 +236,7 @@ const ClaimTrack = () => {
 
                 <form onSubmit={handleSubmit(onSubmit)} className='g-3'>
     
-                    <div className="col-4 mb-1">
+                    <div className="col-3">
                         <label className="form-label"><strong>Modify the status</strong></label>
                         <select className="form-select" 
                                 aria-label="Default select example"

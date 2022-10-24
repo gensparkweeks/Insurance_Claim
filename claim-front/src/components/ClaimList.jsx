@@ -94,14 +94,7 @@ const ClaimList = () => {
                 }
                 </div>
                 <div className='col-1'>
-                    {/* {
-                        auth === 'true' ?
-                            
-                            <button onClick={onLogout} className="btn btn-secondary">Logout</button>
-                        : 
-                            <button onClick={onLogin} className="btn btn-secondary">Login</button>
-                    } */}
-
+                  
                     {
                         auth === 'true' ?
                             <img onClick={() => onLogout()} src={logout} className="img-thumbnail cursor" width={35} alt="Create" />
@@ -113,10 +106,12 @@ const ClaimList = () => {
             
             <div className="container mt-3">
                 <h2>List of Claims</h2>
-                <p>
-                    <img onClick={() => onCreate()} src={create} className="img-thumbnail cursor" width={24} alt="Create" />
-                    <span> <strong>Add a claim</strong> </span>   
-                </p>            
+               
+                    <p>
+                        <img onClick={() => onCreate()} src={create} className="img-thumbnail cursor" width={24} alt="Create" />
+                        <span> <strong>Add a claim</strong> </span>   
+                    </p> 
+                                  
                 <table className="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -130,6 +125,7 @@ const ClaimList = () => {
                             <th>Delete</th>
                             {
                                 name === 'admin' && <th>TrackIt</th>
+                                
                             }
                             
                         </tr>
@@ -162,7 +158,7 @@ const ClaimList = () => {
 
                                 { name === 'admin' &&
                                     <td>
-                                        <img onClick={() => onTrackit(claim.id, claim.user.id)} src={trackit} className="img-thumbnail cursor" width={25} alt="Delete" />
+                                        <img onClick={() => onTrackit(claim.id, claim.user.id)} src={trackit} className="img-thumbnail cursor" width={25} alt="Trackit" />
                                     </td>
                                 }
                                 

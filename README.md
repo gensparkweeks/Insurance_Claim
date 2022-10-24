@@ -1,4 +1,4 @@
-![Claim-Banner](/assets/claim.png "Claim")
+![Claim-Banner](/assets/banner.png "Claim")
 ## Welcome to the Insurance App - Claim Module. 
 ###### Version 1.0
 
@@ -81,4 +81,4 @@ npm install react-doc-viewer --save
 
 > Good introduce to [Trello Board](https://trello.com/b/ExOWpGHq/claim "Trello")
 
-![Claim-Banner](/assets/claim.png "Claim")
+![Claim-Banner](/assets/banner.png "Claim")
