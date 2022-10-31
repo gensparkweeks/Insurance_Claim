@@ -34,15 +34,17 @@ const Login = () => {
             localStorage.setItem('name', data.username)
 
             navigate(-1)
-        }else{
-            Swal.fire({
-                position: 'center',
-                icon: 'warning',
-                title: 'Username and/or password incorrect',
-                showConfirmButton: false,
-                timer: 2000
-              })
         }
+        
+        // else{
+        //     Swal.fire({
+        //         position: 'center',
+        //         icon: 'warning',
+        //         title: 'Username and/or password incorrect',
+        //         showConfirmButton: false,
+        //         timer: 2000
+        //       })
+        // }
         
     }
 

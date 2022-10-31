@@ -3,7 +3,6 @@ import car.insurance.claimback.model.Car;
 import car.insurance.claimback.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -32,7 +31,6 @@ public class CarController {
     public Car update(@RequestBody Car car){
         return carService.update(car);
     }
-
     @DeleteMapping
     public void delete(@PathVariable int id){
         carService.delete(id);
